@@ -1,10 +1,8 @@
 const fs = require('fs/promises')
 
 const listContacts = async () => {
-   fs.readFile("./contacts.json").then(async (data) => {
-     const response = await data.json();
-     console.log(response);
-   })
+   const list = await fs.readFile("models/contacts.json");
+   return list;
 }
 
 const getContactById = async (contactId) => {}
