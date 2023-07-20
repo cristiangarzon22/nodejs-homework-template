@@ -5,7 +5,11 @@ const listContacts = async () => {
    return list;
 }
 
-const getContactById = async (contactId) => {}
+const getContactById = async (contactId) => {
+  const list = await listContacts();
+  const filtering =  list.filter( (e) => e.id === contactId);
+  return filtering;
+}
 
 const removeContact = async (contactId) => {}
 
