@@ -1,6 +1,11 @@
-// const fs = require('fs/promises')
+const fs = require('fs/promises')
 
-const listContacts = async () => {}
+const listContacts = async () => {
+   fs.readFile("./contacts.json").then(async (data) => {
+     const response = await data.json();
+     console.log(response);
+   })
+}
 
 const getContactById = async (contactId) => {}
 
