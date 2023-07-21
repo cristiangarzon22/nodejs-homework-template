@@ -8,22 +8,19 @@ const listContacts = async () => {
 
 const getContactById = async (contactId) => { 
   const contactList = await listContacts();
-  const filteredContact = contactList.filter(
-    (contact) => contact.id === contactId
+  const filteredContact = contactList.find(
+    (contact) => contact.id === contactId.toString()
   );
-  return filteredContact;
+  return filteredContact || null;
 };
 
 const removeContact = async (contactId) => {
-  let validation = false;
+  
   const contactList = await listContacts();
   const contacts = contactList.filter(
     (contact) => contact.id !== contactId
   );
-  if(contacts){
-    validation = true;
-    return validation;
-  }
+  
   return fs.writeFile("models/contacts.json",JSON.stringify(contacts));  
 }
 

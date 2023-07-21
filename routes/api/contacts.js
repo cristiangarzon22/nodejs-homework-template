@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', async (req, res, next) => {  
   const contacts = await listContacts();
-  res.json(JSON.parse(contacts.toString()));
+  res.json(contacts);
 })
 
 router.get("/:contactId", async (req, res, next) => {
@@ -24,15 +24,13 @@ router.post('/', async (req, res, next) => {
   res.status(201).json(newContact);
 })
 
-router.delete('/:contactId', async (req, res, next) => {
-  const fileterContacts = await removeContact(req.params.contactId);
-  if(validation){
-    res.status(200).json({"mensaje": "contacto eliminado"});
-  }else{
-    res.status(404).json({"message": "contact was not found"});
+router.delete("/:contactId", async (req, res, next) => {
+  const result = await removeContact(req.params.contactId);
+  if (!result) {
+    res.status(404).json({ message: "Not found" });
   }
-  //res.json(fileterContacts);
-})
+  return res.status(200).json({ message: "This contact was deleted" });
+});
 
 router.put('/:contactId', async (req, res, next) => {
   res.json({ message: 'template message' })
