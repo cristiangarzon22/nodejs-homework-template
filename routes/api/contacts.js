@@ -29,7 +29,7 @@ router.delete('/:contactId', async (req, res, next) => {
   if(validation){
     res.status(200).json({"mensaje": "contacto eliminado"});
   }else{
-    res.status(404).json({"message": "Not found"});
+    res.status(404).json({"message": "contact was not found"});
   }
   //res.json(fileterContacts);
 })
