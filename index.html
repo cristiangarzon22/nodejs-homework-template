@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sending info using a form - Express</title>
+</head>
+
+<body>
+  <form action="http://localhost:3000/api/contacts" method="POST">
+    <label for="name">Name</label>
+    <input type="text" name="name" required/>
+    <label for="email">Email</label>
+    <input type="text" name="email" required/>
+    <label for="phone">Phone</label>
+    <input type="text" name="phone" required/> 
+    <button type="submit">Login</button>
+  </form>
+</body>
+
+</html>
