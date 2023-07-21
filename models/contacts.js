@@ -36,19 +36,12 @@ const addContact = async (body) => {
     email: body.email,
     phone: body.phone,
   };
-  // Escribir el nuevo contacto en un archivo JSON
-  fs.writeFile("models/contacts.json", JSON.stringify(newContact), (err) => {
-    if (err) {
-      console.error("Error al guardar el contacto en el archivo JSON:", err);
-    }
-  });
+  await fs.appendFile('models/contacts.json', JSON.stringify(newContact) + '\n');
   return newContact;
-}
-
-
+};
 
 const updateContact = async (contactId, body) => {
-  const contactList = await listContacts();
+  const contactList = await listContacts(); 
   const contactIndex = contactList.findIndex((contact) => contact.id === contactId);
   if (contactIndex === -1) {
     throw new Error('Contacto no encontrado');
