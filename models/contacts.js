@@ -11,7 +11,10 @@ const getContactById = async (contactId) => {
   const filteredContact = contactList.find(
     (contact) => contact.id === contactId
   );
-  return filteredContact || null;
+  if (!filteredContact) {
+    return { message: "Not found" };
+  }
+  return filteredContact;
 };
 
 const removeContact = async (contactId) => {
@@ -30,13 +33,16 @@ const addContact = async (body) => {
   if (!body.name || !body.email || !body.phone) {
     return { error: true };
   }
+  const fileData = await fs.promises.readFile('models/contacts.json', 'utf8');
+  let contacts = JSON.parse(fileData);
   const newContact = {
     id: contactId,
     name: body.name,
     email: body.email,
     phone: body.phone,
   };
-  await fs.appendFile('models/contacts.json', JSON.stringify(newContact) + '\n');
+  contacts.push(newContact);
+  await fs.promises.writeFile('models/contacts.json', JSON.stringify(contacts, null, 2));
   return newContact;
 };
 

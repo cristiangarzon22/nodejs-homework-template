@@ -17,10 +17,11 @@ router.get('/', async (req, res, next) => {
 
 router.get("/:contactId", async (req, res, next) => {
   const results = await getContactById(req.params.contactId); 
-  if (results.length === 0) {
-    res.status(404).json({ message: "Not found" });
+  if (results.message === "Not found") {
+    res.status(404).json({ message: `contact with id =>${req.params.contactId} was Not found` });
+  } else {
+    res.json(results);
   }
-  res.json(results);
 });
 
 router.post('/', async (req, res, next) => {
@@ -28,7 +29,7 @@ router.post('/', async (req, res, next) => {
     const { error } = contactSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
-    }
+    } 
 
     const newContact = await addContact(req.body);
 
