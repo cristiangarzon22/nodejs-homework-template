@@ -26,8 +26,6 @@ const removeContact = async (contactId) => {
   return true; // Devuelve true para indicar que el contacto fue eliminado con éxito
 }
 
-
-
 const addContact = async (data) => {
   const { name, email, phone } = data;
   const contacts = await listContacts();
@@ -37,7 +35,7 @@ const addContact = async (data) => {
   
   await fs.writeFile("models/contacts.json", JSON.stringify(contacts, null, 2));
   return newContact;
-  };
+};
 
 const updateContact = async (contactId, body) => {
   const contactList = await listContacts(); 
