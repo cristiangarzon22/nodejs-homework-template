@@ -28,23 +28,16 @@ const removeContact = async (contactId) => {
 
 
 
-const addContact = async (body) => {
-  const contactId = uuidv4();
-  if (!body.name || !body.email || !body.phone) {
-    return { error: true };
-  }
-  const fileData = await fs.promises.readFile('models/contacts.json', 'utf8');
-  let contacts = JSON.parse(fileData);
-  const newContact = {
-    id: contactId,
-    name: body.name,
-    email: body.email,
-    phone: body.phone,
-  };
+const addContact = async (data) => {
+  const { name, email, phone } = data;
+  const contacts = await listContacts();
+  const newContact = { id: uuidv4(), name, email, phone };
+  
   contacts.push(newContact);
-  await fs.promises.writeFile('models/contacts.json', JSON.stringify(contacts, null, 2));
+  
+  await fs.writeFile("models/contacts.json", JSON.stringify(contacts, null, 2));
   return newContact;
-};
+  };
 
 const updateContact = async (contactId, body) => {
   const contactList = await listContacts(); 
