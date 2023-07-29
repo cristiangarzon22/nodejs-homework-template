@@ -1,10 +1,10 @@
 const express = require("express");
-const ctrlContact = require("../controller");
+const ctrlContact = require("../../controller");
 const router = express.Router();
 
 router.get("/", ctrlContact.get);
 
-router.get("/:contactId", ctrlContact.getById);
+router.get("/:contactId", ctrlContact.getById); 
 
 router.post("/", ctrlContact.create);
 

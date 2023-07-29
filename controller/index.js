@@ -11,7 +11,7 @@ const get = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error("ha sucedido un error",error);
     next(error);
   }
 };
