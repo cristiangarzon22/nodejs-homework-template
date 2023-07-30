@@ -4,12 +4,12 @@ const router = express.Router();
 
 router.get("/", ctrlContact.get);
 
-router.get("/:contactId", ctrlContact.getById); 
+router.get("/:Id", ctrlContact.getById); 
 
 router.post("/", ctrlContact.create);
 
-router.delete("/:contactId", ctrlContact.remove);
+router.delete("/:Id", ctrlContact.remove);
 
-router.put("/:contactId", ctrlContact.update);
+router.put("/:Id", ctrlContact.update);
 
 module.exports = router;
