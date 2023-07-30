@@ -109,10 +109,36 @@ const remove = async (req, res, next) => {
   }
 };
 
+const updateStatusFavorite = async (req, res, next) => {
+  const { id } = req.params;
+  const { name, email, phone, favorite } = req.body;
+  try {
+    const result = await service.updateStatusContact( id, { name, email, phone, favorite });////
+    if (result) {
+      res.status(200).json({
+        status: "success",
+        code: 200,
+        data: { data: result },
+      });
+    } else {
+      res.status(400).json({
+        status: "error",
+        code: 400,
+        message: "missing field favorite",
+        data: "Not found",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    next();
+  }
+};
+
 module.exports = {
   get,
   getById,
   create,
   update,
   remove,
+  updateStatusFavorite,
 };

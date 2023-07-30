@@ -12,12 +12,16 @@ const createContact = ({ name, email, phone, favorite }) => {
   return Contact.create({ name, email, phone, favorite });
 };
 
-const updateContact = (id, fields) => {
+const updateContact = (id, fields) => { 
   return Contact.findByIdAndUpdate({ _id: id }, fields, { new: true });
 };
 
 const removeContact = (id) => {
   return Contact.findByIdAndRemove({ _id: id });
+};
+
+const updateStatusContact = (_id,body) => {
+  return Contact.findByIdAndUpdate({ _id: id }, body );
 };
 
 module.exports = {
@@ -26,4 +30,5 @@ module.exports = {
   createContact,
   updateContact,
   removeContact,
+  updateStatusContact,
 };
