@@ -20,7 +20,7 @@ const removeContact = (id) => {
   return Contact.findByIdAndRemove({ _id: id });
 };
 
-const updateStatusContact = (_id,body) => {
+const updateStatusContact = (id,body) => {
   return Contact.findByIdAndUpdate({ _id: id }, body );
 };
 
