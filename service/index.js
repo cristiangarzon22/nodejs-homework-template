@@ -24,6 +24,10 @@ const updateStatusContact = (id,body) => {
   return Contact.findByIdAndUpdate({ _id: id }, body );
 };
 
+const getUserByEmail = async (email) => {
+  return Contact.findOne({ email });
+};
+
 module.exports = {
   getAllContacts,
   getContactById,
@@ -31,4 +35,5 @@ module.exports = {
   updateContact,
   removeContact,
   updateStatusContact,
+  getUserByEmail,
 };

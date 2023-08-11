@@ -1,8 +1,14 @@
 const service = require("../service");
+const jwt = require("jsonwebtoken");
+const { getUserByEmail } = require("../service/user");
+require("dotenv").config();
+const validToken = required("./token/tokenValidate");
+const secret = process.env.SECRET;
 
 const get = async (req, res, next) => {
+  const owner = req.user._id;
   try {
-    const results = await service.getAllContacts(); 
+    const results = await service.getAllContacts({owner}); 
     res.json({
       status: "success",
       code: 200,
@@ -18,6 +24,7 @@ const get = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   const { id } = req.params;
+  const owner = req.user._id;
   try {
     const result = await service.getContactById(id);
     if (result) {
@@ -44,6 +51,7 @@ const getById = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body;
+  const owner = req.user._id;
   try {
     const result = await service.createContact({ name, email, phone, favorite });
 
@@ -59,6 +67,7 @@ const create = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+  const owner = req.user._id;
   const { id } = req.params;
   const { name, email, phone, favorite } = req.body;
 
@@ -86,7 +95,7 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   const { id } = req.params;
-
+  const owner = req.user._id;
   try {
     const result = await service.removeContact(id);
     if (result) {
@@ -108,10 +117,11 @@ const remove = async (req, res, next) => {
     next();
   }
 };
-//hola mundo
+//mpa
 const updateStatusFavorite = async (req, res, next) => {
   const { id } = req.params;
   const { name, email, phone, favorite } = req.body;
+  const owner = req.user._id;
   try {
     const result = await service.updateStatusContact( id, { name, email, phone, favorite });////
     if (result) {
@@ -134,6 +144,79 @@ const updateStatusFavorite = async (req, res, next) => {
   }
 };
 
+const signupCtrl = async (req, res, next) => {
+  const { username, email, password } = req.body;
+  const owner = req.user._id;
+  const user = await getUserByEmail(email);
+  if (user) {
+    return res.status(409).json({
+      status: "error",
+      code: 409,
+      message: "Email is already in use",
+      data: "Conflict",
+    });
+  }
+
+  try {
+    const newUser = new User({ username, email });
+    newUser.setPassword(password);
+    await newUser.save();
+
+    res.status(201).json({
+      status: "success",
+      code: 201,
+      data: {
+        message: "Registration successful",
+      },
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+const loginCtrl = async (req, res, next) => {
+  const { email, password } = req.body;
+  const owner = req.user._id;
+  const user = await getUserByEmail(email);
+
+  if (!user || !user.validPassword(password)) {
+    return res.status(400).json({
+      status: "error",
+      code: 400,
+      message: "Incorrect login or password",
+      data: "Bad request",
+    });
+  }
+
+  const payload = {
+    id: user.id,
+    username: user.username,
+  };
+
+  const token = jwt.sign(payload, secret, { expiresIn: "1h" });
+  res.json({
+    status: "success",
+    code: 200,
+    data: {
+      token,
+    },
+  });
+};
+
+const logoutCtrl = async (req, res, next) => {
+  const owner = req.user._id;
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  validToken.add(token);
+
+  res.status(204).json({
+    status: "success",
+    code: 204,
+    message: "Successfully logout",
+    data: "success",
+  });
+};
 module.exports = {
   get,
   getById,
@@ -141,4 +224,7 @@ module.exports = {
   update,
   remove,
   updateStatusFavorite,
+  signupCtrl,
+  loginCtrl,
+  logoutCtrl,
 };
