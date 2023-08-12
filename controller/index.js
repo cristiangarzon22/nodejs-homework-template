@@ -10,7 +10,7 @@ const get = async (req, res, next) => {
   try {
     const results = await service.getAllContacts({owner}); 
     res.json({
-      status: "success",
+      status: "success", 
       code: 200,
       data: {
         data: results,
@@ -26,7 +26,7 @@ const getById = async (req, res, next) => {
   const { id } = req.params;
   const owner = req.user._id;
   try {
-    const result = await service.getContactById(id);
+    const result = await service.getContactById(id,owner);
     if (result) {
       res.json({
         status: "success",
@@ -53,7 +53,7 @@ const create = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body;
   const owner = req.user._id;
   try {
-    const result = await service.createContact({ name, email, phone, favorite });
+    const result = await service.createContact({ name, email, phone, favorite,owner });
 
     res.status(201).json({
       status: "success",
@@ -72,7 +72,7 @@ const update = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body;
 
   try {
-    const result = await service.updateContact(id, { name, email, phone, favorite });
+    const result = await service.updateContact(id, { name, email, phone, favorite,owner });
     if (result) {
       res.json({
         status: "success",
@@ -97,7 +97,7 @@ const remove = async (req, res, next) => {
   const { id } = req.params;
   const owner = req.user._id;
   try {
-    const result = await service.removeContact(id);
+    const result = await service.removeContact(id,owner);
     if (result) {
       res.json({
         status: "success",
@@ -123,7 +123,7 @@ const updateStatusFavorite = async (req, res, next) => {
   const { name, email, phone, favorite } = req.body;
   const owner = req.user._id;
   try {
-    const result = await service.updateStatusContact( id, { name, email, phone, favorite });////
+    const result = await service.updateStatusContact( id, { name, email, phone, favorite ,owner});////
     if (result) {
       res.status(200).json({
         status: "success",
@@ -176,7 +176,7 @@ const signupCtrl = async (req, res, next) => {
 
 const loginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
-  const owner = req.user._id;
+  ///const owner = req.user._id;
   const user = await getUserByEmail(email);
 
   if (!user || !user.validPassword(password)) {
@@ -204,7 +204,7 @@ const loginCtrl = async (req, res, next) => {
 };
 
 const logoutCtrl = async (req, res, next) => {
-  const owner = req.user._id;
+  ///const owner = req.user._id;
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
 

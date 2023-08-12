@@ -1,31 +1,31 @@
 const Contact = require("./schemas/contact");
-
-const getAllContacts = async () => { 
-  return Contact.find();
+ 
+const getAllContacts = async ({owner}) => { 
+  return Contact.find({owner});
 };
 
-const getContactById = (id) => {
-  return Contact.findOne({ _id:id });
+const getContactById = (id,owner) => {
+  return Contact.findOne({ _id:id ,owner });
 };
 
-const createContact = ({ name, email, phone, favorite }) => {
-  return Contact.create({ name, email, phone, favorite });
+const createContact = ({ name, email, phone, favorite ,owner}) => {
+  return Contact.create({ name, email, phone, favorite ,owner});
 };
 
-const updateContact = (id, fields) => { 
-  return Contact.findByIdAndUpdate({ _id: id }, fields, { new: true });
+const updateContact = (id, fields ,owner) => { 
+  return Contact.findByIdAndUpdate({ _id: id},owner ,fields, { new: true });
 };
 
-const removeContact = (id) => {
-  return Contact.findByIdAndRemove({ _id: id });
+const removeContact = (id , owner) => {
+  return Contact.findByIdAndRemove({ _id: id ,owner});
 };
 
-const updateStatusContact = (id,body) => {
-  return Contact.findByIdAndUpdate({ _id: id }, body );
+const updateStatusContact = (id,body,owner) => {
+  return Contact.findByIdAndUpdate({ _id: id }, body ,owner);
 };
 
-const getUserByEmail = async (email) => {
-  return Contact.findOne({ email });
+const getUserByEmail = async (email,owner) => {
+  return Contact.findOne({ email ,owner});
 };
 
 module.exports = {

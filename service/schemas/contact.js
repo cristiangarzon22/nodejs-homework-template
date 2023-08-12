@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bCrypt = require("bcryptjs");
 
 const contact = new Schema({
-  password: {
+  password: { 
     type: String,
     required: [true, 'Password is required'],
   },
