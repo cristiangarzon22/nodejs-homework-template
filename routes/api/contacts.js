@@ -1,8 +1,8 @@
 const express = require("express");
-const ctrlContact = require("../../controller");
+const ctrlContact = require("../controller/index"); 
 const router = express.Router();
 const auth = require("./middleware/auth");
-const validToken = required("./token/tokenValidate");
+const validToken = required("../token/tokenValidate");
 
 
 router.get("/", validToken, auth, ctrlContact.get);

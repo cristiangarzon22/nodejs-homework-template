@@ -1,8 +1,8 @@
 const service = require("../service");
 const jwt = require("jsonwebtoken");
-const { getUserByEmail } = require("../service/user");
+const { getUserByEmail } = require("../service/index");
 require("dotenv").config();
-const validToken = required("./token/tokenValidate");
+const validToken = required("../token/tokenValidate");
 const secret = process.env.SECRET;
 
 const get = async (req, res, next) => {
