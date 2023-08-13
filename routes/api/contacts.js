@@ -1,9 +1,29 @@
 const express = require("express");
-const ctrlContact = require("../controller/index"); 
+const ctrlContact = require("./controller/index"); /////
 const router = express.Router();
-const auth = require("./middleware/auth");
-const validToken = required("../token/tokenValidate");
+const auth = require("./middleware/auth"); /////
 
+
+const invalidatedTokens = new Set();
+
+const validToken = (req, res, next) => {
+   
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(" ")[1];
+  
+    if (invalidatedTokens.has(token)) {
+      return res.status(401).json({
+        status: "error",
+        code: 401,
+        message: "Unathorized: Invalid token",
+        data: "Unathorized",
+      });
+    }
+  
+    next();
+  };
+  
+ 
 
 router.get("/", validToken, auth, ctrlContact.get);
 
@@ -21,6 +41,19 @@ router.post("/signup", ctrlContact.signupCtrl);
 
 router.post("/login", ctrlContact.loginCtrl);
 
-router.post("/logout", validToken, auth, ctrlContact.logoutCtrl);
+router.post("/logout", validToken, auth, (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  invalidatedTokens.add(token);
+  console.log(Array.from(invalidatedTokens));
+
+  res.status(204).json({
+    status: "success",
+    code: 204,
+    message: "Successfully logout",
+    data: "success",
+  });
+}); 
 
 module.exports = router;

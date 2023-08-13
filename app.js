@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express"); 
 const cors = require("cors");
 const connection = require("./db/connection");
 require("dotenv").config();
@@ -14,7 +14,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-require("../config/config-passport");
+require("./config/config-passport");
 
 app.use("/api/contacts", contactsRouter); //
 

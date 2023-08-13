@@ -1,8 +1,6 @@
-const service = require("../service");
+const service = require("../service/index"); 
 const jwt = require("jsonwebtoken");
-const { getUserByEmail } = require("../service/index");
 require("dotenv").config();
-const validToken = required("../token/tokenValidate");
 const secret = process.env.SECRET;
 
 const get = async (req, res, next) => {
@@ -176,8 +174,8 @@ const signupCtrl = async (req, res, next) => {
 
 const loginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
-  ///const owner = req.user._id;
-  const user = await getUserByEmail(email);
+  const owner = req.user._id;
+  const user = await service.getUserByEmail(email,owner);
 
   if (!user || !user.validPassword(password)) {
     return res.status(400).json({
@@ -203,20 +201,6 @@ const loginCtrl = async (req, res, next) => {
   });
 };
 
-const logoutCtrl = async (req, res, next) => {
-  ///const owner = req.user._id;
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-
-  validToken.add(token);
-
-  res.status(204).json({
-    status: "success",
-    code: 204,
-    message: "Successfully logout",
-    data: "success",
-  });
-};
 module.exports = {
   get,
   getById,
@@ -226,5 +210,4 @@ module.exports = {
   updateStatusFavorite,
   signupCtrl,
   loginCtrl,
-  logoutCtrl,
 };
