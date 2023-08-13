@@ -1,7 +1,7 @@
 const express = require("express");
-const ctrlContact = require("./controller/index"); /////
+const ctrlContact = require("../../controller/index"); /////
 const router = express.Router();
-const auth = require("./middleware/auth"); /////
+const auth = require("../../middleware/auth"); /////
 
 
 const invalidatedTokens = new Set();
