@@ -33,7 +33,7 @@ const getById = async (req, res, next) => {
           data: result,
         },
       });
-    } else {
+    } else { 
       res.status(404).json({
         status: "error",
         code: 404,
@@ -119,9 +119,9 @@ const remove = async (req, res, next) => {
 const updateStatusFavorite = async (req, res, next) => {
   const { id } = req.params;
   const { name, email, phone, favorite } = req.body;
-  const owner = req.user._id;
+  
   try {
-    const result = await service.updateStatusContact( id, { name, email, phone, favorite ,owner});////
+    const result = await service.updateStatusContact( id, { name, email, phone, favorite });////
     if (result) {
       res.status(200).json({
         status: "success",
@@ -144,7 +144,6 @@ const updateStatusFavorite = async (req, res, next) => {
 
 const signupCtrl = async (req, res, next) => {
   const { username, email, password } = req.body;
-  const owner = req.user._id;
   const user = await getUserByEmail(email);
   if (user) {
     return res.status(409).json({
@@ -174,8 +173,8 @@ const signupCtrl = async (req, res, next) => {
 
 const loginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
-  const owner = req.user._id;
-  const user = await service.getUserByEmail(email,owner);
+  
+  const user = await service.getUserByEmail(email);
 
   if (!user || !user.validPassword(password)) {
     return res.status(400).json({

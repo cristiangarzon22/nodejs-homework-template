@@ -12,17 +12,19 @@ const createContact = ({ name, email, phone, favorite ,owner}) => {
   return Contact.create({ name, email, phone, favorite ,owner});
 };
 
-const updateContact = (id, fields ,owner) => { 
-  return Contact.findByIdAndUpdate({ _id: id},owner ,fields, { new: true });
+const updateContact = (id, fields, owner) => { 
+  return Contact.findByIdAndUpdate(id, { owner, ...fields }, { new: true });
 };
 
-const removeContact = (id , owner) => {
-  return Contact.findByIdAndRemove({ _id: id ,owner});
+const removeContact = (id, owner) => {
+  return Contact.findByIdAndRemove(id);
 };
 
-const updateStatusContact = (id,body,owner) => {
-  return Contact.findByIdAndUpdate({ _id: id }, body ,owner);
+
+const updateStatusContact = (id, body) => {
+  return Contact.findByIdAndUpdate(id, body, { new: true });
 };
+
 
 const getUserByEmail = async (email,owner) => {
   return Contact.findOne({ email ,owner});
