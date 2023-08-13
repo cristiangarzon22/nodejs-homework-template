@@ -1,6 +1,6 @@
 const Contact = require("./schemas/contact");
  
-const getAllContacts = async ({owner}) => { 
+const getAllContacts = ({owner}) => { 
   return Contact.find({owner});
 };
  
@@ -26,7 +26,7 @@ const updateStatusContact = (id, body) => {
 };
 
 
-const getUserByEmail = async (email,owner) => {
+const getUserByEmail = (email,owner) => {
   return Contact.findOne({ email ,owner});
 };
 

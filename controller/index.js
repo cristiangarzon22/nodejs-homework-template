@@ -2,6 +2,7 @@ const service = require("../service/index");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.SECRET;
+const User = require("../service/schemas/contact");
 
 const get = async (req, res, next) => {
   const owner = req.user._id;
@@ -144,7 +145,7 @@ const updateStatusFavorite = async (req, res, next) => {
 
 const signupCtrl = async (req, res, next) => {
   const { username, email, password } = req.body;
-  const user = await getUserByEmail(email);
+  const user = await service.getUserByEmail(email);
   if (user) {
     return res.status(409).json({
       status: "error",
@@ -156,7 +157,7 @@ const signupCtrl = async (req, res, next) => {
 
   try {
     const newUser = new User({ username, email });
-    newUser.setPassword(password);
+    newUser.setPassword(password); 
     await newUser.save();
 
     res.status(201).json({
