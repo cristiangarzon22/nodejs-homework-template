@@ -24,12 +24,12 @@ const userSchema = Schema({
 }, {versionKey: false, timestamps: true});
 
 userSchema.methods.setPassword = function(password){
-    this.password = bCrypt.hashSync(password, bcrypt.genSaltSync(10));
+    this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(10));
 }
 
 userSchema.methods.comparePassword = function(password){
     return bCrypt.compareSync(password, this.password);
 }
 
-const UserOwner = model("user", userSchema);
+const UserOwner = mongoose.model("user", userSchema);
 module.exports = UserOwner;
