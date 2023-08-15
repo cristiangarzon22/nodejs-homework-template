@@ -145,7 +145,7 @@ const updateStatusFavorite = async (req, res, next) => {
 };
 
 const signupCtrl = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
   const user = await service.getUserByEmail(email);
   if (user) {
     return res.status(409).json({
@@ -157,7 +157,7 @@ const signupCtrl = async (req, res, next) => {
   }
 
   try {
-    const newUser = new UserOwner({name, email });////
+    const newUser = new UserOwner({username, email });////
     newUser.setPassword(password); 
     await newUser.save();
 
@@ -173,23 +173,15 @@ const signupCtrl = async (req, res, next) => {
   }
 };
 
-const loginCtrl = async (req, res, next) => {
+const loginCtrl = async (req, res) => {
   const { email, password } = req.body;
-  
-  const user = await service.getUserByEmail(email);
-
+  const user = await UserOwner.findOne({ email });
   if (!user || !user.comparePassword(password)) {
-    return res.status(400).json({
-      status: "error",
-      code: 400,
-      message: "Incorrect login or password",
-      data: "Bad request",
-    });
+    Error("Email or password is wrong");
   }
 
   const payload = {
     id: user.id,
-    username: user.username,
   };
 
   const token = jwt.sign(payload, secret, { expiresIn: "1h" });

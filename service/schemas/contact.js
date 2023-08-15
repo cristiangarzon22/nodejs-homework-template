@@ -11,7 +11,7 @@ const contact = new Schema({
     required: [true, 'Email is required'],
     unique: true,
   },
-   number: { 
+   phone: { 
     type: String,
     required: [true, 'number is required'],
   },
