@@ -23,6 +23,10 @@ const contact = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
+  },////////////
+  favorite: {
+    type: Boolean,
+    default: false,
   }
 }, {versionKey: false, timestamps: true});
 
