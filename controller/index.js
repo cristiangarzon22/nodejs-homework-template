@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.SECRET;
 const UserOwner = require("../service/schemas/UsersOwner");
-
+var gravatar = require('gravatar');
 
 const get = async (req, res, next) => {
   const owner = req.user._id;
@@ -157,8 +157,10 @@ const signupCtrl = async (req, res, next) => {
   }
 
   try {
-    const newUser = new UserOwner({username, email });////
-    newUser.setPassword(password); 
+
+    const avatarURL = gravatar.url(email); 
+    const newUser = new UserOwner({username, email, avatarURL });////
+    newUser.setPassword(password);
     await newUser.save();
 
     res.status(201).json({
