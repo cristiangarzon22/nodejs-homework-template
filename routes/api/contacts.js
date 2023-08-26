@@ -66,7 +66,7 @@ const processImageMiddleware = async (req, res, next) => {
   }
 };
 
-router.patch("/avatars", upload.single("picture"), processImageMiddleware, async (req, res, next) => {
+router.patch("/avatars", validToken, auth, upload.single("picture"), processImageMiddleware, async (req, res, next) => {
   const { path: temporaryName, originalname } = req.file;
   const fileName = path.join(storeImage, originalname);
 
