@@ -3,6 +3,8 @@ const multer = require("multer");
 const Jimp = require("jimp");
 const path = require("path");
 const fs = require("fs").promises;
+const UserOwner = require("../../service/schemas/UsersOwner");
+
 
 const ctrlContact = require("../../controller/index");
 const auth = require("../../middleware/auth");
@@ -68,8 +70,11 @@ router.patch("/avatars", upload.single("picture"), processImageMiddleware, async
   const { path: temporaryName, originalname } = req.file;
   const fileName = path.join(storeImage, originalname);
 
-  try {
+  try { 
     await fs.rename(temporaryName, fileName);
+    const userId = req.user._id;
+    const avatarURL = `public/avatars/${originalname}`;
+    await UserOwner.findByIdAndUpdate(userId, { $set: { avatarURL } });
     res.json({ message: "File uploaded successfully", status: 200 });
   } catch (err) {
     await fs.unlink(temporaryName);
