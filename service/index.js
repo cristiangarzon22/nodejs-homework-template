@@ -34,7 +34,7 @@ const getUserByVerificationToken = async (token) => {
 };
 
 const verifyUser = (id) => {
-  return UserOwner.updateOne({ _id: id }, { verify: true, verificationToken: null });
+    return UserOwner.updateOne({ _id: id }, { verify: true, verificationToken: null });
 };
 
 

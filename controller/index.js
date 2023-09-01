@@ -198,6 +198,22 @@ const loginCtrl = async (req, res) => {
   });
 };
 
+const verify = async (req, res, next) => {
+  const {email} = req.body;
+  const verificationToken = nanoid();
+  try {
+  if (!email) {
+    return res.status(400).json({
+      status: "error",
+      message: "missing required field email",
+    });
+  }
+    emailService.sendEmail(verificationToken,email);
+} catch (e) {
+  next(e);
+}
+};
+
 module.exports = {
   get,
   getById,
@@ -207,4 +223,5 @@ module.exports = {
   updateStatusFavorite,
   signupCtrl,
   loginCtrl,
+  verify
 };

@@ -28,7 +28,7 @@ app.get("/verify/:verificationToken", async (req, res, next) => {
     );
 
     if (existingUser) {
-      await verifyUser(existingUser._id);
+      await verifyUser(existingUser._id); 
       res.send(" message: Verification successful ");
       } else next("message: User not found");
    } catch (err) {
