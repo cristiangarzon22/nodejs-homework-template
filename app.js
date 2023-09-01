@@ -3,6 +3,8 @@ const cors = require("cors");
 const connection = require("./db/connection");
 require("dotenv").config();
 const contactsRouter = require("./routes/api/contacts"); 
+const { getUserByVerificationToken, verifyUser } = require("./service/index");
+
 
 
 const app = express();
@@ -17,7 +19,22 @@ app.use(express.json());
 
 require("./config/config-passport");
 
-app.use("/api/contacts", contactsRouter); //
+app.use("/api/contacts", contactsRouter);
+
+app.get("/verify/:verificationToken", async (req, res, next) => {
+  try {
+    const existingUser = await getUserByVerificationToken(
+      req.params.verificationToken
+    );
+
+    if (existingUser) {
+      await verifyUser(existingUser._id);
+      res.send(" message: Verification successful ");
+      } else next("message: User not found");
+   } catch (err) {
+    next(err);
+  }
+});
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

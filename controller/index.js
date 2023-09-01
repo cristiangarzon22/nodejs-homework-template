@@ -4,6 +4,8 @@ require("dotenv").config();
 const secret = process.env.SECRET;
 const UserOwner = require("../service/schemas/UsersOwner");
 var gravatar = require('gravatar');
+const emailService = require("../service/EmailService");
+const { nanoid } = require("nanoid");
 
 const get = async (req, res, next) => {
   const owner = req.user._id;
@@ -157,12 +159,12 @@ const signupCtrl = async (req, res, next) => {
   }
 
   try {
-
+    const verificationToken = nanoid();
     const avatarURL = gravatar.url(email); 
-    const newUser = new UserOwner({username, email, avatarURL });////
+    const newUser = new UserOwner({username, email, avatarURL ,verificationToken});
     newUser.setPassword(password);
     await newUser.save();
-
+    emailService.sendEmail(verificationToken,email);
     res.status(201).json({
       status: "success",
       code: 201,
