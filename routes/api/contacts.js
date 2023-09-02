@@ -90,11 +90,11 @@ router.put("/:id", validToken, auth, ctrlContact.update);
 router.patch("/:id/favorite", validToken, auth, ctrlContact.updateStatusFavorite);
 router.post("/signup", ctrlContact.signupCtrl);
 router.post("/login", ctrlContact.loginCtrl);
-router.post("/users/verify/", ctrlContact.verify);///// 
+router.post("/users/verify/", ctrlContact.verify);
 router.post("/logout", validToken, auth, (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
-
+ 
   invalidatedTokens.add(token);
   console.log(Array.from(invalidatedTokens));
 

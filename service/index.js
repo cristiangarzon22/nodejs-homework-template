@@ -35,6 +35,10 @@ const getUserByVerificationToken = async (token) => {
 
 const verifyUser = (id) => {
     return UserOwner.updateOne({ _id: id }, { verify: true, verificationToken: null });
+}; 
+
+const updateUserVerificationToken = (userId, verificationToken) => {
+  return UserOwner.findByIdAndUpdate(userId, { verificationToken }, { new: true });
 };
 
 
@@ -48,4 +52,5 @@ module.exports = {
   getUserByEmail,
   getUserByVerificationToken,
   verifyUser,
+  updateUserVerificationToken,
 };

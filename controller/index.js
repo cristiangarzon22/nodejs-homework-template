@@ -198,16 +198,24 @@ const loginCtrl = async (req, res) => {
   });
 };
 
-const verify = async (req, res, next) => {
+const verify = async (req, res, next) => { 
   const {email} = req.body;
-  const verificationToken = nanoid();
-  try {
   if (!email) {
     return res.status(400).json({
       status: "error",
       message: "missing required field email",
     });
   }
+  try {
+    const user = await UserOwner.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.verify) {
+      return res.status(400).json({ message: "Verification has already been passed" });
+    }
+    const verificationToken = nanoid();
+    await service.updateUserVerificationToken(user._id, verificationToken);
     emailService.sendEmail(verificationToken,email);
 } catch (e) {
   next(e);
